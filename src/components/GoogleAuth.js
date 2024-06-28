@@ -1,16 +1,9 @@
 import { createRoot, render, StrictMode, createInterpolateElement } from '@wordpress/element';
 import { Button, TextControl } from '@wordpress/components';
-import { useEffect, useState } from 'react'; // Import useState hook for managing state
+import { useState } from 'react'; // Import useState hook for managing state
 import axios from 'axios'; // Import axios for making HTTP requests
-import { __ } from '@wordpress/i18n';
-import { BrowserRouter as Router, Routes, Route,useLocation } from 'react-router-dom';
-import ScanPosts from '../components/ScanPost';
 
-import "./scss/style.scss"
-
-const domElement = document.getElementById( window.wpmudevPluginTest.dom_element_id );
-
-const WPMUDEV_PluginTest = () => {
+const GoogleAuth = () => {
 
     const [clientId, setClientId] = useState(''); // State for Client ID
     const [clientSecret, setClientSecret] = useState(''); // State for Client Secret
@@ -18,6 +11,7 @@ const WPMUDEV_PluginTest = () => {
     const handleChangeClientId = (newValue) => {
         setClientId(newValue); // Update clientId state
     }
+
     const handleChangeClientSecret = (event) => {
         setClientSecret(event.target.value); // Update clientSecret state
     }
@@ -29,13 +23,14 @@ const WPMUDEV_PluginTest = () => {
             return;
         }
 
+        // Construct the data object to send
+        const data = {
+            client_id: clientId,
+            client_secret: clientSecret,
+        };
+
         // Make a POST request to the REST API endpoint
-        axios.post('/wp-json/wpmudev/v1/auth/auth-url',
-            {
-                client_id: clientId,
-                client_secret: clientSecret,
-            },
-            {
+        axios.get('http://localhost/localwordpress/wp-json/wpmudev/v1/auth/auth-url?client_id='+clientId+'&client_secret='+clientSecret,{
             headers :{
                 'content-type':'application/json',
                 'X-WP-NONCE':window.wpmudevPluginTest.nonce,
@@ -50,18 +45,7 @@ const WPMUDEV_PluginTest = () => {
                 console.error('Error:', error);
             });
     }
-    useEffect( ()=> {
-        axios.get('/wp-json/wpmudev/v1/auth/auth-url',{
-            headers :{
-                'content-type':'application/json',
-                'X-WP-NONCE':window.wpmudevPluginTest.nonce,
-            } 
-        })
-        .then((res) => {
-            setClientId(res.data.client_id);
-            setClientSecret(res.data.client_secret);
-        })
-    },[] );
+
     return (
     <>
         <div class="sui-header">
@@ -130,31 +114,4 @@ const WPMUDEV_PluginTest = () => {
     </>
     );
 }
-function useQuery() {
-    const { search } = useLocation();
-  
-    return React.useMemo(() => new URLSearchParams(search), [search]);
-  }
-const App = () => (
-    <Router>
-    <QueryParamsDemo />
-  </Router>    
-);
-function QueryParamsDemo() {
-    let query = useQuery();
-    const pages = query.get("page");
-    if(pages=='wpmudev_plugintest_auth'){
-        return (<WPMUDEV_PluginTest />);
-    }
-    if(pages=='wpmudev-posts-maintenance'){
-        return (<ScanPosts />);
-    }
-}
-
-if ( createRoot ) {
-    createRoot( domElement ).render(<StrictMode><App /></StrictMode>);
-   
-} else {
-    render( <StrictMode><App /></StrictMode>, domElement );
-   
-}
+export default GoogleAuth;

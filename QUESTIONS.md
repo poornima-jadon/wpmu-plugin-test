@@ -8,10 +8,10 @@ While executing npm’s build command, you will notice that the resulting zipped
 The plugin introduces a new admin menu named **Google Auth**, featuring fields for Client ID and Client Secret. To enhance this functionality:
 
 1. Ensure the page is translatable.
-2. Set the Client Secret field as a password input for enhanced security.
-3. Add functionality to the save button, directing inputs to the `wp-json/wpmudev/v1/auth/auth-url` REST endpoint.
-4. Implement notifications for successful storage or error responses.
-5. Secure the existing endpoint.
+2. Set the Client Secret field as a password input for enhanced security. done
+3. Add functionality to the save button, directing inputs to the `wp-json/wpmudev/v1/auth/auth-url` REST endpoint.done
+4. Implement notifications for successful storage or error responses. done
+5. Secure the existing endpoint.done
 6. Complete the endpoint's callback for storing inputs in the `wpmudev_plugin_test_settings` option.
 7. Verify correct retrieval using the mentioned methods.
 
@@ -19,10 +19,10 @@ The plugin introduces a new admin menu named **Google Auth**, featuring fields f
 # 3. Google oAuth Return URL Setup
 To implement Google’s oAuth, establish a return URL endpoint at `/wp-json/wpmudev/v1/auth/confirm`, providing functionality to:
 
-1. Retrieve user email.
-2. If the email exists and the user is not logged in, log in the user.
-3. If the email doesn’t exist, create a new user with a generated password, and log them in. Redirect to the admin or home page accordingly.
-4. Create a shortcode to display a personalized message if the user is logged in or a link for Google oAuth login if not.
+1. Retrieve user email. Done
+2. If the email exists and the user is not logged in, log in the user. Done
+3. If the email doesn’t exist, create a new user with a generated password, and log them in. Redirect to the admin or home page accordingly. done 
+4. Create a shortcode to display a personalized message if the user is logged in or a link for Google oAuth login if not. [google_oauth]
 
 
 # 4. Admin Menu for Posts Maintenance

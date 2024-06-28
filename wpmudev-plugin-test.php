@@ -13,13 +13,14 @@
  * @package           create-block
  */
 
-if ( ! defined( 'ABSPATH' ) ) {
+ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly.
 }
 
 // Support for site-level autoloading.
 if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	require_once __DIR__ . '/vendor/autoload.php';
+	require_once __DIR__ . '/app/admin-pages/wpmudev-posts-maintenance.php';
 }
 
 
@@ -52,7 +53,7 @@ if ( ! defined( 'WPMUDEV_PLUGINTEST_ASSETS_URL' ) ) {
 if ( ! defined( 'WPMUDEV_PLUGINTEST_SUI_VERSION' ) ) {
 	define( 'WPMUDEV_PLUGINTEST_SUI_VERSION', '2.12.23' );
 }
-
+ 
 
 /**
  * WPMUDEV_PluginTest class.
@@ -92,9 +93,11 @@ class WPMUDEV_PluginTest {
 			false,
 			dirname( plugin_basename( __FILE__ ) ) . '/languages'
 		);
-
+		
 		WPMUDEV\PluginTest\Loader::instance();
+		
 	}
+	
 }
 
 // Init the plugin and load the plugin instance for the first time.
@@ -104,3 +107,18 @@ add_action(
 		WPMUDEV_PluginTest::get_instance()->load();
 	}
 );
+// Shortcode to display Google OAuth login link or personalized message
+function google_oauth_shortcode() {
+    ob_start();
+
+    if (is_user_logged_in()) {
+        // Display personalized message for logged-in users
+        echo 'Welcome, ' . wp_get_current_user()->user_login . '!';
+    } else {
+        // Display Google OAuth login link
+        echo '<a href="/wp-json/wpmudev/v1/auth/redirect">Login with Google</a>';
+    }
+
+    return ob_get_clean();
+}
+add_shortcode('google_oauth', 'google_oauth_shortcode');

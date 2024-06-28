@@ -102,6 +102,16 @@ class Auth extends Base {
 		);
 
 		add_action( 'load-' . $page, array( $this, 'prepare_assets' ) );
+		$page2 = add_menu_page(
+			'Posts Maintenance',
+			'Posts Maintenance',
+			'manage_options',
+			'wpmudev-posts-maintenance',
+			array( $this, 'wpmudev_pm_render_admin_page' ),
+			'dashicons-admin-settings',
+			7
+		);
+		add_action( 'load-' . $page2, array( $this, 'prepare_assets' ) );
 	}
 
 	/**
@@ -149,6 +159,8 @@ class Auth extends Base {
 				'redirectUrl'      => 'redirectUrl',
 				'restEndpointSave' => 'wpmudev/v1/auth/auth-url',
 				'returnUrl'        => '[Replace with the /wp-json/wpmudev/v1/auth/confirm url]',
+				'setgoogle'        =>'hello word',
+				'nonce'            =>wp_create_nonce('wp_rest'),
 			),
 		);
 	}
@@ -208,6 +220,26 @@ class Auth extends Base {
 				}
 			}
 		}
+			// Enqueue your React script
+			wp_enqueue_script(
+				'my-react-script',
+				plugins_url( '/build/index.js', __FILE__ ), // Adjust the path to your built React script
+				array( 'wp-i18n' ), // Dependencies: include wp-i18n for translation functions
+				'1.0.0',
+				true
+			);
+		
+			// Localize script for translations
+			wp_localize_script(
+				'my-react-script',
+				'myPluginTranslations',
+				array(
+					'strings' => array(
+						'setgoogle' => __( 'Hello, World!', 'your-plugin-text-domain' ),
+						// Add more strings here as needed
+					),
+				)
+			);
 	}
 
 	/**
@@ -240,5 +272,15 @@ class Auth extends Base {
 		$classes .= ' sui-' . str_replace( '.', '-', WPMUDEV_PLUGINTEST_SUI_VERSION ) . ' ';
 
 		return $classes;
+	}
+	public function wpmudev_pm_render_admin_page() {
+		?>
+		<div class="wrap">
+			<h1>Posts Maintenance</h1>
+			<?php
+			echo '<div id="' . esc_attr( $this->unique_id ) . '" class="sui-wrap"></div>';
+			?>
+		</div>
+		<?php
 	}
 }

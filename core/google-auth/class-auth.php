@@ -94,6 +94,7 @@ class Auth extends Base {
 	private function get_client_id() {
 		if ( empty( $this->client_id ) ) {
 			$settings = $this->get_settings();
+			print_r($settings);
 
 			$this->client_id = ! empty( $settings['client_id'] ) ? $settings['client_id'] : '';
 		}

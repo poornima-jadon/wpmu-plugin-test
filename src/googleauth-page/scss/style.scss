@@ -12,6 +12,9 @@ $sui-image-path: '~@wpmudev/shared-ui/dist/images/';
         input[type="text"] {
             min-width: 100%;
         }
+        input[type="password"] {
+            min-width: 100%;
+        }
 
         label {
             display:block;
